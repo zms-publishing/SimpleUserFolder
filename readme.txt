@@ -1,0 +1,163 @@
+Simple User Folder
+
+ Copyright (c) 2002-2003 New Information Paradigms Ltd
+
+ This Software is released under the MIT License:
+ http://www.opensource.org/licenses/mit-license.html
+ See license.txt for more details.
+
+ Installation
+
+  The Simple User Folder is installed as a normal
+  Python Product for Zope.
+
+  Unpack the .tar.gz into the Products folder
+  of you're Zope installation's INSTANCE_HOME
+  and then restart Zope.
+
+  To add a Simple User Folder, simply navigate
+  to the required location and select
+  'Simple User Folder' from the add list.
+  If a user folder already exists at that location, 
+  you will need to delete it first.
+  You will need to be logged in as the Emergency
+  User to perform these actions at the root 
+  of your ZODB.
+
+  It is also wise to develop and thoroughly test
+  any support methods for your Simple User Folder 
+  before replacing an existing user folder.  
+
+ Configuration
+
+  The following methods need to be added in an object
+  from which the Simple User Folder can acquire
+  them. This is usually the folder containing the
+  Simple User Folder instance.
+
+  Alternatively, you can subclass the SimpleUserFolder
+  class and implement these methods there.
+
+   def addUser(name, password, roles)
+
+    This adds a user. It should raise an exception
+    if the user already exists.
+
+    name 
+     
+      a string specifying the user's name
+ 
+    password 
+
+      a string containing the user's password.
+      This method must perform any encryption of 
+      the password that is required.
+
+    roles
+
+      a list of strings identifying the roles to 
+      be stored for this user. This list may be
+      empty.
+
+   def editUser(name, password, roles)
+
+    This edits a user. It should raise an exception
+    if the user does not exist.
+
+    name 
+     
+      a string specifying the user's name.
+      This identifies the user to be edited and so
+      this method cannot be used to rename users.
+ 
+    password 
+
+      a string containing the user's password.
+      This method must perform any encryption of 
+      the password that is required.
+
+    roles
+
+      a list of strings identifying the roles to 
+      be stored for this user. This list may be
+      empty.
+
+   def deleteUser(name)
+
+    This deletes a user. It should raise an exception
+    if the user does not exist.
+
+   def getUserNames()
+
+    This should return a list of user names
+    contained in this user folder. Each username
+    should be a string.
+
+    Note: If this method is implemented with a 
+          Z SQL Method, then the method should
+          return results only a 'NAME' column. 
+          One row should be returned for each 
+          user.
+          See the tests for examples.
+
+   def getUserDetails(name)
+
+    This should return something that behave like
+    a dictionary with keys and values as follows:
+
+    password
+
+      a string containing the password for the user.
+      This value must either be in clear text or
+      encrypted in such a way that 
+      AccessControl.AuthEnconding.pw_validate
+      can encrypt a password supplied in the HTTP
+      request to match it.
+
+      pw_validate can currently handle passwords
+      encypted using the following schemes:
+
+      SSHA
+      SHA
+      CRYPT
+
+      Further schemes can be registered using the
+      AccessControl.AuthEnconding.registerScheme
+      function.
+
+    roles
+
+      a list of strings identifying the roles 
+      for the user. This list may be empty.
+
+    If no user exists for the name supplied, None
+    should be returned.
+
+    NB: Develop this method under another name and
+        rename it to 'getUserDetails' once you are 
+        happy that it works as you will be unable to
+        do anything with any object that can acquire
+        the Simple User Folder using this method
+        if it has problems.
+
+    Note: If this method is implemented with a 
+          Z SQL Method, then the method should
+          return results with 'NAME', 'PASSWORD'
+          and 'ROLE' columns. One row should be
+          returned for each role the user has.
+          See the tests for examples.
+    
+ Testing
+
+  The tests can be run by running the all_tests.py
+  script in the SimpleUserFolder/tests directory.
+
+  Make sure you have set up the appropriate environment 
+  varriables.
+
+  In addition, if you are using Zope 2.5.1 or earlier,
+  you will need to delete line 39 of DA.py
+  found in the ZGadflyDA product in your Zope base
+  or the tests will crash.
+  
+                
