@@ -1,5 +1,17 @@
 Change & Credit Log
 
+  Version 1.1.1
+
+    - Fixed bug that prevented new Simple User Folder instances
+      registering with the security machinery.
+
+    - Improvements to the testing framework to cater for encrypted
+      passwords and user folders that don't want to support arbitary
+      extra attributes for their users.
+
+    - Compatible with Zope 2.7. These changes were purely to the 
+      testing framework.
+
   Version 1.1.0
 
     - Added the ability to give users extra attributes.
