@@ -2,11 +2,25 @@ Change & Credit Log
 
   Version 1.1.0
 
-    - Catered for getUserDetails raising an exception in a 
-      graceful way
+    - Made Simple User Folder instances ObjectManagers.
+      This means configuration methods can now be put in
+      the Simpler User Folder, rather than the 
+      Simple User Folder's container
+
+    - Renamed 'getUserNames' configuration method to
+      'getUserIds' to avoid a name clash brought on
+      by the addition of ObjectManager functionality
+
+    - Catered for getUserDetails raising an exception or 
+      returning rubbish in a graceful way
 
     - Documented and tested for the case where editUser is 
       called with a password of None
+
+    - Enabled UsageBase class to test implementations that
+      stored encrypted passwords
+
+    - Tidied up tests, SQL tests in particular
 
     Credits
    

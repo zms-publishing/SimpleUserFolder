@@ -12,6 +12,8 @@ def test_suite():
     suite.addTest(test_suite())
     from test_PythonScriptUsage import test_suite
     suite.addTest(test_suite())
+    from test_ContainedUsage import test_suite
+    suite.addTest(test_suite())
     from test_SQLUsage import test_suite
     suite.addTest(test_suite())
     from test_SubclassUsage import test_suite

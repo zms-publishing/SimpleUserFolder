@@ -27,7 +27,7 @@ class Tests(UsageBase):
 
     def _setup(self):
 
-        f = self.folder
+        f = self.folder.acl_users
         # config
         addPythonScript(f,'addUser')
         addPythonScript(f,'deleteUser')

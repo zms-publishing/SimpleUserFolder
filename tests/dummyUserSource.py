@@ -40,7 +40,7 @@ class dummyUserSource(Implicit):
             user.password = password
         user.roles = roles
 
-    def getUserNames(self):
+    def getUserIds(self):
         """return a list of usernames"""
         names = self.users.keys()
         names.sort()
@@ -80,7 +80,7 @@ class dummyUserFolder(SimpleUserFolder):
             user.password = password
         user.roles = roles
 
-    def getUserNames(self):
+    def getUserIds(self):
         """return a list of usernames"""
         names = self.users.keys()
         names.sort()

@@ -112,7 +112,7 @@ class Tests(UsageBase):
         addSQLMethod(f,'deleteUser')
         addSQLMethod(f,'editUser')
         addSQLMethod(f,'getUserDetails')
-        addSQLMethod(f,'getUserNames')
+        addSQLMethod(f,'getUserIds')
         
         # initial users
         f.addUser(name='test_user',password='password',roles=[])

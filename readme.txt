@@ -42,7 +42,7 @@ Simple User Folder
 
   The following methods need to be added in an object
   from which the Simple User Folder can acquire
-  them. This is usually the folder containing the
+  them. This is usually the Contents tab of the
   Simple User Folder instance.
 
   Alternatively, you can subclass the SimpleUserFolder
@@ -100,7 +100,7 @@ Simple User Folder
     This deletes a user. It should raise an exception
     if the user does not exist.
 
-   def getUserNames()
+   def getUserIds()
 
     This should return a list of user names
     contained in this user folder. Each username

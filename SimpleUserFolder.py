@@ -6,10 +6,12 @@
 # See license.txt for more details.
 
 ManageUsersPermission = 'Manage users'
+ViewManagementPermission = 'View management screens'
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.User import BasicUserFolder
 from Globals import InitializeClass
+from OFS.ObjectManager import ObjectManager
 from Shared.DC.ZRDB.Results import Results
 from sys import exc_info
 from User import User
@@ -22,21 +24,29 @@ def addSimpleUserFolder(self,REQUEST=None):
     if REQUEST is not None:
         return self.manage_main(self,REQUEST)
 
-class SimpleUserFolder(BasicUserFolder):
+class SimpleUserFolder(ObjectManager,BasicUserFolder):
 
     meta_type="Simple User Folder"
 
     security = ClassSecurityInfo()
 
     manage_options=(
-        BasicUserFolder.manage_options[0:1]
+        ({'label':'Users', 'action':'manage_main_users',
+         'help':('OFSP','User-Folder_Contents.stx')},)
+        + ObjectManager.manage_options[0:1]
         + BasicUserFolder.manage_options[2:]
         )
+
+    security.declareProtected(ViewManagementPermission,'manage_main')
+    manage_main = ObjectManager.manage_main
+    
+    security.declareProtected(ManageUsersPermission,'manage_main_users')
+    manage_main_users = BasicUserFolder.manage_main
 
     security.declareProtected(ManageUsersPermission,'getUserNames')
     def getUserNames(self):
         """Return a list of usernames"""
-        getUserNames = getattr(self.aq_parent,'getUserNames',None)
+        getUserNames = getattr(self,'getUserIds',None)
         if getUserNames is None:
             return []
         names = getUserNames()

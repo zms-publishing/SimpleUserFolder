@@ -15,7 +15,7 @@ from unittest import makeSuite,main
 class BorkedAddUser (Exception) : pass
 class BorkedEditUser (Exception) : pass
 class BorkedDeleteUser (Exception) : pass
-class BorkedGetUserNames (Exception) : pass
+class BorkedGetUserIds (Exception) : pass
 class BorkedGetUserDetails (Exception) : pass
 
 # a b0rked SUF
@@ -29,9 +29,9 @@ class BrokenSUF(SimpleUserFolder):
         """edit a user"""
         raise BorkedEditUser
     
-    def getUserNames(self):
+    def getUserIds(self):
         """return a list of usernames"""
-        raise BorkedGetUserNames
+        raise BorkedGetUserIds
 
     def getUserDetails(self,name):
         """return a dictionary for the specified user"""
@@ -59,11 +59,11 @@ class Tests(UsageBase):
         self.failUnless(self.suf.getUser('test') is None)
 
     def test_getUserNames(self):        
-        self.assertRaises(BorkedGetUserNames,
+        self.assertRaises(BorkedGetUserIds,
                           self.suf.getUserNames)
 
     def test_getUsers(self):
-        self.assertRaises(BorkedGetUserNames,
+        self.assertRaises(BorkedGetUserIds,
                           self.suf.getUsers)
         
     def test__doAddUser(self):
