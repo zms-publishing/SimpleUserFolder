@@ -67,7 +67,6 @@ Change & Credit Log
 
 Stuff still to be done:
 
-  - Support for SUF containing things
   - Support for authenticate method
   - Support for authorisation?
   - Support for computed local roles.
