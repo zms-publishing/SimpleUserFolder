@@ -56,8 +56,6 @@ class SUFBase(Base):
 
 class UsageBase(SUFBase):
 
-    brain_damaged = 0
-
     def _setup(self):
         # this method needs to make sure the following
         # attributes are available:
@@ -175,9 +173,7 @@ class UsageBase(SUFBase):
         except:
             pass
         else:
-            # tests can admit their brain damaged, like gadfly
-            if not self.brain_damaged:
-                self.fail('UserFolder allowed duplicate')
+            self.fail('UserFolder allowed duplicate')
 
     def test__doChangeUserWithKW(self):        
         self.assertRaises(ValueError,

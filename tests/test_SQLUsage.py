@@ -96,9 +96,6 @@ class SQLUsers:
         
 class Tests(UsageBase):
 
-    # gadfly can't make a column only allow unique values
-    brain_damaged = 1
-    
     def _setup(self):
         
         f = self.folder
