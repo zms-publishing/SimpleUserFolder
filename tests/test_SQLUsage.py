@@ -5,13 +5,12 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
 import Globals
 
 from base import UsageBase, test_dir
-from unittest import makeSuite,main,TestSuite
+from unittest import makeSuite
 from os import mkdir
-from os.path import abspath, exists, join
+from os.path import exists, join
 from shutil import rmtree
 from dummyUserSource import User
 
@@ -142,6 +141,3 @@ class Tests(UsageBase):
         
 def test_suite():
     return makeSuite(Tests)
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')

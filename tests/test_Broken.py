@@ -5,11 +5,9 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
-
 from base import UsageBase
 from Products.SimpleUserFolder.SimpleUserFolder import SimpleUserFolder
-from unittest import makeSuite,main
+from unittest import makeSuite
 
 # specific b0rking exceptions
 class BorkedAddUser (Exception) : pass
@@ -103,6 +101,3 @@ class Tests(UsageBase):
     
 def test_suite():
     return makeSuite(Tests)
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')

@@ -5,10 +5,8 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
-
 from base import UsageBase
-from unittest import makeSuite,main
+from unittest import makeSuite
 from dummyUserSource import dummyUserSource
 
 class Tests(UsageBase):
@@ -24,6 +22,3 @@ class Tests(UsageBase):
         
 def test_suite():
     return makeSuite(Tests)
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')

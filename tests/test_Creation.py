@@ -5,10 +5,8 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
-
 from base import Base
-from unittest import makeSuite,main
+from unittest import makeSuite
 
 from Acquisition import aq_base
 from Products.SimpleUserFolder.SimpleUserFolder import SimpleUserFolder
@@ -36,6 +34,3 @@ class Tests(Base):
 
 def test_suite():
     return makeSuite(Tests)
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')
