@@ -108,14 +108,14 @@ Simple User Folder
 
     Note: If this method is implemented with a 
           Z SQL Method, then the method should
-          return results only a 'NAME' column. 
+          return results only a 'name' column. 
           One row should be returned for each 
           user.
           See the tests for examples.
 
    def getUserDetails(name)
 
-    This should return something that behave like
+    This should return something that behaves like
     a dictionary with keys and values as follows:
 
     password
@@ -143,6 +143,10 @@ Simple User Folder
       a list of strings identifying the roles 
       for the user. This list may be empty.
 
+    Any others keys in the returned dictionary will 
+    be made available through the user's __getitem__
+    interface. See the tests for examples.
+
     If no user exists for the name supplied, None
     should be returned.
 
@@ -156,10 +160,14 @@ Simple User Folder
 
     Note: If this method is implemented with a 
           Z SQL Method, then the method should
-          return results with 'NAME', 'PASSWORD'
-          and 'ROLE' columns. One row should be
+          return results with 'name', 'password'
+          and 'role' columns. One row should be
           returned for each role the user has.
           See the tests for examples.
+          Any other columns in the first row 
+          returned will be made available
+          through the user's __getitem__
+          interface. See the tests for examples.
     
  Testing
 

@@ -17,13 +17,20 @@ class User(BasicUser):
         # bypass immutability
         d = self.__dict__
         d['__'] = dict['password']
+        del dict['password']
         d['name'] = dict['name']
+        del dict['name']
         d['roles'] = dict['roles']
+        del dict['roles']
+        d['extra'] = dict
 
     def __setattr__(self,name,value):
         # This type of user object should never get modified
         raise AttributeError, 'This object is immutable'
 
+    def __getitem__(self,name):
+        return self.extra[name]
+    
     def __getstate__(self):
         """Don't let simple user objects get pickled"""
         raise UnpickleableError, "This object cannot be pickled"

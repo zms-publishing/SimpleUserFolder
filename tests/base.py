@@ -65,11 +65,32 @@ class UsageBase(SUFBase):
         #            necessary acquisiton content
         # self.users - a dictionary-ish object that
         #              provides access to the sample users
+        # two test users
+        #
+        # One, with the following:
+        # username: 'test_user'
+        # password: 'password'
+        # roles:    []
+        #
+        # And the other with:
+        # username: 'test_user_with_extras'
+        # password: 'password'
+        # roles:    []
+        # ...and 'extra' attributes as follows:
+        # extra1:'extra1value'
+        # extra2:2
         raise NotImplementedError
         
     def setUp(self):
-        SUFBase.setUp(self)
-        self._setup()
+        # The try/except is to catch failure here
+        # without chewing up ZODB connections
+        try:
+            SUFBase.setUp(self)
+            self._setup()
+        except:
+            print "Exception during setUp:"
+            import sys,traceback
+            traceback.print_exception(*sys.exc_info())
         
     ### THE TEST SUITE
         
@@ -80,13 +101,25 @@ class UsageBase(SUFBase):
         self.assertEqual(user.name,'test_user')
         self.assertEqual(user.roles,[])
 
+    def test_getUserWithExtras(self):
+        user = self.suf.getUser('test_user_with_extras')
+        self.failUnless(isinstance(user,User))
+        self.assertEqual(user.__,'password')
+        self.assertEqual(user.name,'test_user_with_extras')
+        self.assertEqual(user.roles,[])
+        self.assertEqual(user['extra1'],'extra1value')
+        self.assertEqual(user['extra2'],2)
+        # A final check that we get a KeyError
+        # if we go for an extra that isn't there
+        self.assertRaises(KeyError,user.__getitem__,'extra3')
+
     def test_getUserNames(self):        
-        self.assertEqual(list(self.suf.getUserNames()),['test_user'])
+        self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
 
     def test_getUsers(self):
         users = self.suf.getUsers()
         self.assertEqual([user.getUserName() for user in users],
-                         ['test_user'])
+                         ['test_user','test_user_with_extras'])
         self.failUnless(isinstance(users[0],User))
         
     def test__doAddUserWithKW(self):        
@@ -122,7 +155,7 @@ class UsageBase(SUFBase):
         # order of names is not ensured
         names = list(self.suf.getUserNames())
         names.sort()
-        self.assertEqual(names,['test_user','testname'])
+        self.assertEqual(names,['test_user','test_user_with_extras','testname'])
         self.assertEqual(self.suf.getUser('testname').roles,['one','two'])
 
     def test__doAddUserDuplicate(self):
@@ -176,7 +209,7 @@ class UsageBase(SUFBase):
         user = self.users['test_user']
         self.assertEqual(user.password,'newpassword')
         self.assertEqual(user.roles,['some','roles'])
-        self.assertEqual(list(self.suf.getUserNames()),['test_user'])
+        self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
         self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
 
     def test__doChangeUserSamePassword(self):        
@@ -189,7 +222,7 @@ class UsageBase(SUFBase):
         user = self.users['test_user']
         self.assertEqual(user.password,'password')
         self.assertEqual(user.roles,['some','roles'])
-        self.assertEqual(list(self.suf.getUserNames()),['test_user'])
+        self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
         self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
 
     def test__doDelUsers(self):        

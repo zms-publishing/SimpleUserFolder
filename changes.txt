@@ -2,6 +2,14 @@ Change & Credit Log
 
   Version 1.1.0
 
+    - Added the ability to give users extra attributes.
+      These are accessed by supplying them in
+      getUserDetails and then using the user's __getitem__
+      interface.
+
+    - Changed case of NAME, PASSWORD and ROLE to
+      name, password and role for Z SQL implementations
+
     - Made Simple User Folder instances ObjectManagers.
       This means configuration methods can now be put in
       the Simpler User Folder, rather than the 

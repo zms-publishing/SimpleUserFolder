@@ -5,41 +5,20 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
-import Globals
-
-from base import UsageBase, test_dir
-from unittest import makeSuite,main
-from os.path import abspath
-from dummyUserSource import dummyUserFolder
+from test_PythonScriptUsage import Tests as PythonScriptTests
+from unittest import makeSuite
 
 from Products.PythonScripts.PythonScript import manage_addPythonScript
 
-def addPythonScript(obj,id):
-    f=open(test_dir+'/'+id+'.pys')     
-    file=f.read()     
-    f.close()     
-    manage_addPythonScript(obj,id)
-    obj._getOb(id).write(file)
-    return getattr(obj,id)     
-
-class Tests(UsageBase):
+class Tests(PythonScriptTests):
 
     def _setup(self):
+        PythonScriptTests._setup(self,self.folder.acl_users)
 
-        f = self.folder.acl_users
-        # config
-        addPythonScript(f,'addUser')
-        addPythonScript(f,'deleteUser')
-        addPythonScript(f,'editUser')
-        addPythonScript(f,'getUserDetails')
-        addPythonScript(f,'getUserIds')
-        self.users = f
-        # initial users
-        f.addUser('test_user', 'password',[])
+    def test_ReallyContains(self):
+        # paranoid check that our methods are in the SUF
+        # 5 methods + 2 users = 7
+        self.assertEqual(len(self.suf.objectIds()),7)
 
 def test_suite():
     return makeSuite(Tests)
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')

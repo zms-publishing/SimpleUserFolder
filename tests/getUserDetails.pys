@@ -12,7 +12,12 @@ doc = getattr(container,name,None)
 if doc is None:
   return None
 
-return {
+dict = {
   'password' : doc.password,
   'roles'    : doc.roles
   }
+
+if getattr(doc,'extra',None):
+  dict.update(doc.extra)
+
+return dict

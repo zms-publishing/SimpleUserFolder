@@ -19,6 +19,12 @@ class Tests(UsageBase):
         self.folder._setObject('acl_users', ob)
         self.suf = self.users = self.folder.acl_users
 
+    def _addOneWithExtras(self,username,password,roles,extra):
+        # this method needs to make sure a user is available
+        # called 'test_user_with_extras'
+        # See test_getUserWithExtras for details
+        self.suf._addOneWithExtras(username,password,roles,extra)
+
     def test_correctUF(self):
         # test we really have a dummyUserFolder
         assert isinstance(self.suf,dummyUserFolder)

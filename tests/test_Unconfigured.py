@@ -20,6 +20,10 @@ class Tests(UsageBase):
     def test_getUser(self):
         self.assertEqual(self.suf.getUser('test'),None)
     
+    def test_getUserWithExtras(self):
+        # This test becomes as above for unconfigured SUF's
+        self.test_getUser()
+        
     def test_getUserNames(self):
         self.assertEqual(self.suf.getUserNames(),[])
 

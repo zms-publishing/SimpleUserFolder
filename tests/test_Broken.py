@@ -44,20 +44,19 @@ class BrokenSUF(SimpleUserFolder):
 class Tests(UsageBase):
 
     def _setup(self):
-        ob=BrokenSUF()
+        ob =BrokenSUF()
         self.folder.manage_delObjects(ids=['acl_users'])
         self.folder._setObject('acl_users', ob)
         self.suf = self.users = self.folder.acl_users
-
-    def test_correctUF(self):
-        # test we really have a dummyUserFolder
-        assert isinstance(self.suf,BrokenSUF)
-        assert isinstance(self.folder.acl_users,BrokenSUF)
-
+    
     def test_getUser(self):
         # check for non-barfage
         self.failUnless(self.suf.getUser('test') is None)
 
+    def test_getUserWithExtras(self):
+        # This test becomes the same as the above
+        self.test_getUser()
+        
     def test_getUserNames(self):        
         self.assertRaises(BorkedGetUserIds,
                           self.suf.getUserNames)

@@ -52,7 +52,7 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
         names = getUserNames()
         if isinstance(names,Results):
             # extract names from the multiple rows returned
-            names = [n.NAME for n in names]
+            names = [n.name for n in names]
         return names
 
     security.declareProtected(ManageUsersPermission,'getUser')
@@ -66,16 +66,15 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
             if not dict:
                 return None
             if isinstance(dict,Results):
-                # extract roles from the multiple rows returned
-                rows = dict
-                row = rows[0]
-                dict = {
-                    'name':row.NAME,
-                    'password':row.PASSWORD
-                    }
+                result = dict
+                dict = {}
                 roles = []
-                for row in rows:
-                    role = row.ROLE
+                keys = result.names()
+                row = result[0]
+                for key in keys:
+                    dict[key]=row[key]
+                for row in result:
+                    role = row.role
                     if role:
                         roles.append(role)
                 dict['roles']=roles
