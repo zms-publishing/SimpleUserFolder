@@ -5,7 +5,7 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
+import Testing
 
 from unittest import TestCase
 from security import PermissiveSecurityPolicy, OmnipotentUser
@@ -24,6 +24,9 @@ from os import curdir
 class Base(TestCase):
 
     def setUp( self ):
+        import Zope
+        if hasattr(Zope, 'startup'):
+            Zope.startup()
         get_transaction().begin()
         self._policy = PermissiveSecurityPolicy()
         self._oldPolicy = setSecurityPolicy(self._policy)
@@ -111,14 +114,14 @@ class UsageBase(SUFBase):
         self.failUnless(isinstance(user,User))
         self.failUnless(AuthEncoding.pw_validate(user.__,'password' ))
         self.assertEqual(user.name,'test_user')
-        self.assertEqual(user.roles,[])
+        self.assertEqual(list(user.roles),[])
 
     def test_getUserWithExtras(self):
         user = self.suf.getUser('test_user_with_extras')
         self.failUnless(isinstance(user,User))
         self.failUnless(AuthEncoding.pw_validate(user.__,'password' ))
         self.assertEqual(user.name,'test_user_with_extras')
-        self.assertEqual(user.roles,[])
+        self.assertEqual(list(user.roles),[])
         if self.extra_attribute_tests:
             self.assertEqual(user['extra1'],'extra1value')
             self.assertEqual(user['extra2'],2)
@@ -164,12 +167,12 @@ class UsageBase(SUFBase):
                           )
         user = self.users['testname']
         self.failUnless(AuthEncoding.pw_validate(user.password,'testpassword' ))
-        self.assertEqual(user.roles,['one','two'])
+        self.assertEqual(list(user.roles),['one','two'])
         # order of names is not ensured
         names = list(self.suf.getUserNames())
         names.sort()
         self.assertEqual(names,['test_user','test_user_with_extras','testname'])
-        self.assertEqual(self.suf.getUser('testname').roles,['one','two'])
+        self.assertEqual(list(self.suf.getUser('testname').roles),['one','two'])
 
     def test__doAddUserDuplicate(self):
         self.suf._doAddUser(
@@ -219,9 +222,9 @@ class UsageBase(SUFBase):
                           )
         user = self.users['test_user']
         self.failUnless(AuthEncoding.pw_validate(user.password,'newpassword' ))
-        self.assertEqual(user.roles,['some','roles'])
+        self.assertEqual(list(user.roles),['some','roles'])
         self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
-        self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
+        self.assertEqual(list(self.suf.getUser('test_user').roles),['some','roles'])
 
     def test__doChangeUserSamePassword(self):        
         self.suf._doChangeUser(
@@ -232,9 +235,9 @@ class UsageBase(SUFBase):
                           )
         user = self.users['test_user']
         self.failUnless(AuthEncoding.pw_validate(user.password,'password' ))
-        self.assertEqual(user.roles,['some','roles'])
+        self.assertEqual(list(user.roles),['some','roles'])
         self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
-        self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
+        self.assertEqual(list(self.suf.getUser('test_user').roles),['some','roles'])
 
     def test__doDelUsers(self):        
         self.suf._doDelUsers(['test_user'])
