@@ -1,39 +1,53 @@
 Change & Credit Log
 
+  Version 1.1.0
+
+    - Catered for getUserDetails raising an exception in a 
+      graceful way
+
+    Credits
+   
+      Chris Withers -- Development work.
+
+  Version 0.9.0
+
+    - Improved documentation
+
+    - Corrected security declaration for getUserNames
+
+    - Added getUsers method
+
+    Credits
+
+      Chris Withers   -- Development work and improved
+                         documentation. Also documented one way
+                         encyption usage.
+
+      Charlie Reiman  -- Reported typo in security declaration for
+                         getUserNames.
+
+      Olivier Deckmyn -- Pointed out documentation that needed 
+                         clarifying.  
+      
+      Stefan Holek    -- Suggested the implementation of the getUsers
+                         method.
+
   Version 0.8.0
 
     Initial release
 
-    Chris Withers -- Development work.
+    Credits
+    
+      Chris Withers -- Development work.
 
-  Version 0.9.0
+Stuff still to be done:
 
-    Bug fixes.
-
-    Chris Withers -- Development work and improved documentation. Also 
-                     documented one way encyption usage.
-    Charlie Reiman -- Reported typo in security declaration for getUserNames.
-    Olivier Deckmyn -- Pointed out documentation that needed clarifying.
-    Stefan Holek -- Suggesting the implementation of the getUsers method.
-
-Release Schedule
-
-  Version 0.10.0
-
-    Support for computed local roles.
-
-  Version 0.11.0
-  
-    Support for caching of method results.
-
-  Version 0.12.0
-
-    This will happen once the Simple User Folder has
-    been shown to work with the CMF
-
-  Version 1.0.0
-
-    This will happen after a few months with no bugs
-    have passed.
+  - Support for SUF containing things
+  - Support for authenticate method
+  - Support for authorisation?
+  - Support for computed local roles.
+  - Documentation of caching of method results.
+  - Examples for how to use
+  - Provide HTML documentation?
     
                 

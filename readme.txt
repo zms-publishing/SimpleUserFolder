@@ -1,5 +1,6 @@
 Simple User Folder
 
+ Copyright (c) 2004 Simplistix Ltd
  Copyright (c) 2002-2003 New Information Paradigms Ltd
 
  This Software is released under the MIT License:
