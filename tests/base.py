@@ -56,6 +56,11 @@ class SUFBase(Base):
 
 class UsageBase(SUFBase):
 
+    # This can be set to 0 in a subclass, indicating you're
+    # taking responsibility for extra attribute testing
+    # or you don't want to support it
+    extra_attribute_tests = 1
+    
     def _setup(self):
         # this method needs to make sure the following
         # attributes are available:
@@ -76,6 +81,8 @@ class UsageBase(SUFBase):
         # password: 'password'
         # roles:    []
         # ...and 'extra' attributes as follows:
+        # (which may be omitted if extra_attribute_tests
+        #  is set to 0)
         # extra1:'extra1value'
         # extra2:2
         raise NotImplementedError
@@ -102,21 +109,22 @@ class UsageBase(SUFBase):
     def test_getUser(self):
         user = self.suf.getUser('test_user')
         self.failUnless(isinstance(user,User))
-        self.assertEqual(user.__,'password')
+        self.failUnless(AuthEncoding.pw_validate(user.__,'password' ))
         self.assertEqual(user.name,'test_user')
         self.assertEqual(user.roles,[])
 
     def test_getUserWithExtras(self):
         user = self.suf.getUser('test_user_with_extras')
         self.failUnless(isinstance(user,User))
-        self.assertEqual(user.__,'password')
+        self.failUnless(AuthEncoding.pw_validate(user.__,'password' ))
         self.assertEqual(user.name,'test_user_with_extras')
         self.assertEqual(user.roles,[])
-        self.assertEqual(user['extra1'],'extra1value')
-        self.assertEqual(user['extra2'],2)
-        # A final check that we get a KeyError
-        # if we go for an extra that isn't there
-        self.assertRaises(KeyError,user.__getitem__,'extra3')
+        if self.extra_attribute_tests:
+            self.assertEqual(user['extra1'],'extra1value')
+            self.assertEqual(user['extra2'],2)
+            # A final check that we get a KeyError
+            # if we go for an extra that isn't there
+            self.assertRaises(KeyError,user.__getitem__,'extra3')
 
     def test_getUserNames(self):        
         self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
@@ -210,7 +218,7 @@ class UsageBase(SUFBase):
                           '', # domains
                           )
         user = self.users['test_user']
-        self.assertEqual(user.password,'newpassword')
+        self.failUnless(AuthEncoding.pw_validate(user.password,'newpassword' ))
         self.assertEqual(user.roles,['some','roles'])
         self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
         self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
@@ -223,7 +231,7 @@ class UsageBase(SUFBase):
                           '', # domains
                           )
         user = self.users['test_user']
-        self.assertEqual(user.password,'password')
+        self.failUnless(AuthEncoding.pw_validate(user.password,'password' ))
         self.assertEqual(user.roles,['some','roles'])
         self.assertEqual(list(self.suf.getUserNames()),['test_user','test_user_with_extras'])
         self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
