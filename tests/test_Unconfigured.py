@@ -7,19 +7,27 @@
 
 import Zope
 
-from base import SUFBase
+from base import UsageBase
 from unittest import makeSuite,main
 
 from Products.SimpleUserFolder.SimpleUserFolder import UnconfiguredException
 
-class Tests(SUFBase):
+class Tests(UsageBase):
 
+    def _setup(self):
+        pass
+    
     def test_getUser(self):
         self.assertEqual(self.suf.getUser('test'),None)
     
     def test_getUserNames(self):
         self.assertEqual(self.suf.getUserNames(),[])
 
+    def test_getUsers(self):
+        users = self.suf.getUsers()
+        self.assertEqual([user.getUserName() for user in users],
+                         [])
+        
     def test__doAddUser(self):
         self.assertRaises(UnconfiguredException,
                           self.suf._doAddUser,
@@ -29,51 +37,24 @@ class Tests(SUFBase):
                           '', # domains
                           )
 
-    def test__doAddUserWithKW(self):        
-        self.assertRaises(ValueError,
-                          self.suf._doAddUser,
-                          'testname',
-                          'testpassword',
-                          [], # roles
-                          '', # domains
-                          x=1,
-                          y=2,
-                          )
-
-    def test__doAddUserWithDomains(self):        
-        self.assertRaises(ValueError,
-                          self.suf._doAddUser,
-                          'testname',
-                          'testpassword',
-                          [], # roles
-                          'fish', # domains
-                          )
-
-    def test__doChangeUserWithKW(self):        
-        self.assertRaises(ValueError,
-                          self.suf._doChangeUser,
-                          'testname',
-                          'testpassword',
-                          [], # roles
-                          '', # domains
-                          x=1,
-                          y=2,
-                          )
-
-    def test__doChangeUserWithDomains(self):        
-        self.assertRaises(ValueError,
-                          self.suf._doChangeUser,
-                          'testname',
-                          'testpassword',
-                          [], # roles
-                          'fish', # domains
-                          )
+    def test__doAddUserDuplicate(self):
+        # if test__doAddUser passes, then we're fine
+        self.test__doAddUser()
 
     def test__doChangeUser(self):        
         self.assertRaises(UnconfiguredException,
                           self.suf._doChangeUser,
                           'testname',
-                          'testpassword',
+                          'newpassword',
+                          ['some','roles'], # roles
+                          '', # domains
+                          )
+
+    def test__doChangeUserSamePassword(self):        
+        self.assertRaises(UnconfiguredException,
+                          self.suf._doChangeUser,
+                          'testname',
+                          None,
                           [], # roles
                           '', # domains
                           )

@@ -65,11 +65,13 @@ class UsageBase(SUFBase):
         #            necessary acquisiton content
         # self.users - a dictionary-ish object that
         #              provides access to the sample users
-        raise NotImplemented
+        raise NotImplementedError
         
     def setUp(self):
         SUFBase.setUp(self)
         self._setup()
+        
+    ### THE TEST SUITE
         
     def test_getUser(self):
         user = self.suf.getUser('test_user')

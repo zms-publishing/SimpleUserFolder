@@ -18,6 +18,8 @@ def test_suite():
     suite.addTest(test_suite())
     from test_Unconfigured import test_suite
     suite.addTest(test_suite())
+    from test_Broken import test_suite
+    suite.addTest(test_suite())
     from test_User import test_suite
     suite.addTest(test_suite())
     return suite
