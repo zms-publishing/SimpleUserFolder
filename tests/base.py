@@ -11,6 +11,7 @@ from unittest import TestCase
 from security import PermissiveSecurityPolicy, OmnipotentUser
 
 from Acquisition import aq_base
+from AccessControl import AuthEncoding
 from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
 from AccessControl.SecurityManager import setSecurityPolicy
 from AccessControl.User import UnrestrictedUser
@@ -114,7 +115,7 @@ class UsageBase(SUFBase):
                           [], # domains
                           )
         user = self.users['testname']
-        self.assertEqual(user.password,'testpassword')
+        self.failUnless(AuthEncoding.pw_validate(user.password,'testpassword' ))
         self.assertEqual(user.roles,['one','two'])
         # order of names is not ensured
         names = list(self.suf.getUserNames())
