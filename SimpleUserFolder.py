@@ -43,6 +43,14 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
     security.declareProtected(ManageUsersPermission,'manage_main_users')
     manage_main_users = BasicUserFolder.manage_main
 
+    def manage_afterAdd(self,item,container):
+        ObjectManager.manage_afterAdd(self,item,container)
+        BasicUserFolder.manage_afterAdd(self,item,container)
+
+    def manage_beforeDelete(self,item,container):
+        BasicUserFolder.manage_beforeDelete(self,item,container)    
+        ObjectManager.manage_beforeDelete(self,item,container)
+
     security.declareProtected(ManageUsersPermission,'getUserNames')
     def getUserNames(self):
         """Return a list of usernames"""

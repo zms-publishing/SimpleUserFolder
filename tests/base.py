@@ -60,7 +60,8 @@ class UsageBase(SUFBase):
         # this method needs to make sure the following
         # attributes are available:
         # self.suf - the user folder, wrapped in any
-        #            necessary acquisiton content
+        #            necessary acquisiton content,
+        #            and added to self.folder
         # self.users - a dictionary-ish object that
         #              provides access to the sample users
         # two test users
@@ -91,6 +92,12 @@ class UsageBase(SUFBase):
             traceback.print_exception(*sys.exc_info())
         
     ### THE TEST SUITE
+        
+    def test_allow_groups(self):
+        self.failUnless(
+            aq_base(self.folder.__allow_groups__) is aq_base(self.suf),
+            `self.folder.__allow_groups__, self.suf`
+            )
         
     def test_getUser(self):
         user = self.suf.getUser('test_user')
