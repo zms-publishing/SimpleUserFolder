@@ -1,10 +1,9 @@
-# Copyright (c) 2002 New Information Paradigms Ltd
+# Copyright (c) 2004 Simplistix Ltd
+# Copyright (c) 2001-2003 New Information Paradigms Ltd
 #
 # This Software is released under the MIT License:
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
-#
-# $Id: base.py,v 1.1.2.3 2003/07/23 22:57:49 chrisw Exp $
 
 import Zope
 
