@@ -4,7 +4,7 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 #
-# $Id: User.py,v 1.1.4.2 2003/08/05 17:24:30 chrisw Exp $
+# $Id: User.py,v 1.1.2.1 2003/07/22 19:02:03 chrisw Exp $
 
 from AccessControl.User import BasicUser
 from cPickle import UnpickleableError

@@ -4,7 +4,7 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 #
-# $Id: SimpleUserFolder.py,v 1.1.4.2 2003/08/05 17:24:30 chrisw Exp $
+# $Id: SimpleUserFolder.py,v 1.1.2.1 2003/07/22 19:02:03 chrisw Exp $
 
 ManageUsersPermission = 'Manage users'
 
@@ -50,7 +50,10 @@ class SimpleUserFolder(BasicUserFolder):
         getUser = getattr(self,'getUserDetails',None)
         if getUser is None:
             return None
-        dict = getUser(name=name)
+        try:
+            dict = getUser(name=name)
+        except:
+            return None
         if not dict:
             return None
         if isinstance(dict,Results):
@@ -106,6 +109,7 @@ class SimpleUserFolder(BasicUserFolder):
         changeUser = getattr(self,'editUser',None)
         if changeUser is None:
             raise UnconfiguredException, 'Editing of users has not been configured'
+
         changeUser(name=name,password=password,roles=roles)
 
     def _doDelUsers(self, names):

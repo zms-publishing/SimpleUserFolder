@@ -4,7 +4,7 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 #
-# $Id: test_PythonScriptUsage.py,v 1.1.4.2 2003/08/05 17:24:30 chrisw Exp $
+# $Id: test_PythonScriptUsage.py,v 1.1.2.1 2003/07/22 19:02:03 chrisw Exp $
 
 import Zope
 import Globals

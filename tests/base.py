@@ -4,7 +4,7 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 #
-# $Id: base.py,v 1.1.4.2 2003/08/05 17:24:30 chrisw Exp $
+# $Id: base.py,v 1.1.2.3 2003/07/23 22:57:49 chrisw Exp $
 
 import Zope
 
@@ -74,6 +74,9 @@ class UsageBase(SUFBase):
     def test_getUser(self):
         user = self.suf.getUser('test_user')
         self.failUnless(isinstance(user,User))
+        self.assertEqual(user.__,'password')
+        self.assertEqual(user.name,'test_user')
+        self.assertEqual(user.roles,[])
 
     def test_getUserNames(self):        
         self.assertEqual(list(self.suf.getUserNames()),['test_user'])
@@ -170,6 +173,19 @@ class UsageBase(SUFBase):
                           )
         user = self.users['test_user']
         self.assertEqual(user.password,'newpassword')
+        self.assertEqual(user.roles,['some','roles'])
+        self.assertEqual(list(self.suf.getUserNames()),['test_user'])
+        self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
+
+    def test__doChangeUserSamePassword(self):        
+        self.suf._doChangeUser(
+                          'test_user',
+                          None,
+                          ['some','roles'], # roles
+                          '', # domains
+                          )
+        user = self.users['test_user']
+        self.assertEqual(user.password,'password')
         self.assertEqual(user.roles,['some','roles'])
         self.assertEqual(list(self.suf.getUserNames()),['test_user'])
         self.assertEqual(self.suf.getUser('test_user').roles,['some','roles'])
