@@ -5,6 +5,9 @@ Change & Credit Log
     - Catered for getUserDetails raising an exception in a 
       graceful way
 
+    - Documented and tested for the case where editUser is 
+      called with a password of None
+
     Credits
    
       Chris Withers -- Development work.

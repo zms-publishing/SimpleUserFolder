@@ -73,9 +73,12 @@ Simple User Folder
  
     password 
 
-      a string containing the user's password.
+      a string containing the user's password or None.
+      If the password is None, the user's password
+      should not be changed.
       This method must perform any encryption of 
       the password that is required.
+      
 
     roles
 

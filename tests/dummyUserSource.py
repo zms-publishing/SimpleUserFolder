@@ -36,7 +36,8 @@ class dummyUserSource(Implicit):
     def editUser(self,name, password, roles):
         """edit a user"""
         user = self.users[name]
-        user.password = password
+        if password is not None:
+            user.password = password
         user.roles = roles
 
     def getUserNames(self):
@@ -75,7 +76,8 @@ class dummyUserFolder(SimpleUserFolder):
     def editUser(self,name, password, roles):
         """edit a user"""
         user = self.users[name]
-        user.password = password
+        if password is not None:
+            user.password = password
         user.roles = roles
 
     def getUserNames(self):
