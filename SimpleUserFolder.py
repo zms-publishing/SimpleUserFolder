@@ -11,7 +11,9 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.User import BasicUserFolder
 from Globals import InitializeClass
 from Shared.DC.ZRDB.Results import Results
+from sys import exc_info
 from User import User
+from zLOG import LOG, ERROR
 
 def addSimpleUserFolder(self,REQUEST=None):
     """Add a SimpleUserFolder to a container as acl_users"""
@@ -46,31 +48,35 @@ class SimpleUserFolder(BasicUserFolder):
     security.declareProtected(ManageUsersPermission,'getUser')
     def getUser(self,name):
         """Return the named user object or None"""
-        getUser = getattr(self,'getUserDetails',None)
-        if getUser is None:
-            return None
         try:
+            getUser = getattr(self,'getUserDetails',None)
+            if getUser is None:
+                return None
             dict = getUser(name=name)
+            if not dict:
+                return None
+            if isinstance(dict,Results):
+                # extract roles from the multiple rows returned
+                rows = dict
+                row = rows[0]
+                dict = {
+                    'name':row.NAME,
+                    'password':row.PASSWORD
+                    }
+                roles = []
+                for row in rows:
+                    role = row.ROLE
+                    if role:
+                        roles.append(role)
+                dict['roles']=roles
+            dict['name']=name
+            return User(dict)
         except:
+            LOG('SimpleUserFolder',
+                ERROR,
+                'Error getting user '+repr(name),
+                error=exc_info())
             return None
-        if not dict:
-            return None
-        if isinstance(dict,Results):
-            # extract roles from the multiple rows returned
-            rows = dict
-            row = rows[0]
-            dict = {
-                'name':row.NAME,
-                'password':row.PASSWORD
-                }
-            roles = []
-            for row in rows:
-                role = row.ROLE
-                if role:
-                    roles.append(role)
-            dict['roles']=roles
-        dict['name']=name
-        return User(dict)
 
     security.declareProtected(ManageUsersPermission,'getUser')
     def getUsers(self):

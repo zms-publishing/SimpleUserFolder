@@ -25,9 +25,18 @@ Simple User Folder
   User to perform these actions at the root 
   of your ZODB.
 
-  It is also wise to develop and thoroughly test
-  any support methods for your Simple User Folder 
-  before replacing an existing user folder.  
+  It is always wise to develop and thoroughly test
+  any support methods that your Simple User Folder 
+  will use before replacing an existing user folder.  
+
+  If at all possible, create an empty folder and
+  thoroughly test your Simple User Folder instance 
+  there before using it elsewhere. This is 
+  particularly important if your Simple User Folder
+  instance is to be used at the root of your ZODB, 
+  as if it doesn't behave as expected, you will have
+  log log in as the Emergency User to correct any
+  problems.
 
  Configuration
 
@@ -137,12 +146,13 @@ Simple User Folder
     If no user exists for the name supplied, None
     should be returned.
 
-    NB: Develop this method under another name and
-        rename it to 'getUserDetails' once you are 
-        happy that it works as you will be unable to
-        do anything with any object that can acquire
-        the Simple User Folder using this method
-        if it has problems.
+    NB: If your SimpleUserFolder appears to not
+        be working, it may mean that an exception
+        is being raised as a result of your
+        getUserDetails method. Consult the event
+        log for your Zope instance and look for log
+        entries of the form:
+        "SimpleUserFolder Error getting user"
 
     Note: If this method is implemented with a 
           Z SQL Method, then the method should
