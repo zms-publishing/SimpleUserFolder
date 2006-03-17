@@ -5,7 +5,11 @@
 # http://www.opensource.org/licenses/mit-license.html
 # See license.txt for more details.
 
-import Zope
+try:
+    import Zope2 as Zope
+except ImportError:
+    raise
+    import Zope
 
 from Acquisition import Implicit
 

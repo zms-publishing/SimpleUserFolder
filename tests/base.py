@@ -27,7 +27,13 @@ class Base(TestCase):
         import Zope
         if hasattr(Zope, 'startup'):
             Zope.startup()
-        get_transaction().begin()
+        try:
+            from transaction import begin
+        except ImportError:
+            raise
+            get_transaction().begin()
+        else:
+            begin()
         self._policy = PermissiveSecurityPolicy()
         self._oldPolicy = setSecurityPolicy(self._policy)
         self.connection = Zope.DB.open()
@@ -35,7 +41,13 @@ class Base(TestCase):
         newSecurityManager( None, OmnipotentUser().__of__( self.root ) )
     
     def tearDown( self ):
-        get_transaction().abort()
+        try:
+            from transaction import abort
+        except ImportError:
+            raise
+            get_transaction().abort()
+        else:
+            abort()
         self.connection.close()
         noSecurityManager()
         setSecurityPolicy(self._oldPolicy)
