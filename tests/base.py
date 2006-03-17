@@ -46,7 +46,6 @@ class Base(TestCase):
         try:
             from transaction import abort
         except ImportError:
-            raise
             get_transaction().abort()
         else:
             abort()
