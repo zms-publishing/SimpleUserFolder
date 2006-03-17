@@ -6,6 +6,7 @@
 # See license.txt for more details.
 
 from base import UsageBase
+from logging import getLogger
 from Products.SimpleUserFolder.SimpleUserFolder import SimpleUserFolder
 from unittest import makeSuite
 
@@ -46,7 +47,12 @@ class Tests(UsageBase):
         self.folder.manage_delObjects(ids=['acl_users'])
         self.folder._setObject('acl_users', ob)
         self.suf = self.users = self.folder.acl_users
+        getLogger('SimpleUserFolder').disabled = True
     
+    def tearDown(self):
+        getLogger('SimpleUserFolder').disabled = 0
+        UsageBase.tearDown(self)
+
     def test_getUser(self):
         # check for non-barfage
         self.failUnless(self.suf.getUser('test') is None)
