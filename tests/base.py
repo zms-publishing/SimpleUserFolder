@@ -24,13 +24,15 @@ from os import curdir
 class Base(TestCase):
 
     def setUp( self ):
-        import Zope
+        try:
+            import Zope2 as Zope
+        except ImportError:
+            import Zope
         if hasattr(Zope, 'startup'):
             Zope.startup()
         try:
             from transaction import begin
         except ImportError:
-            raise
             get_transaction().begin()
         else:
             begin()

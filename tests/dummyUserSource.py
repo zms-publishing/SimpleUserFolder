@@ -8,7 +8,6 @@
 try:
     import Zope2 as Zope
 except ImportError:
-    raise
     import Zope
 
 from Acquisition import Implicit
