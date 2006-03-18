@@ -47,10 +47,10 @@ class Tests(UsageBase):
         self.folder.manage_delObjects(ids=['acl_users'])
         self.folder._setObject('acl_users', ob)
         self.suf = self.users = self.folder.acl_users
-        getLogger('SimpleUserFolder').disabled = True
+        getLogger('event.SimpleUserFolder').disabled = True
     
     def tearDown(self):
-        getLogger('SimpleUserFolder').disabled = 0
+        getLogger('event.SimpleUserFolder').disabled = 0
         UsageBase.tearDown(self)
 
     def test_getUser(self):

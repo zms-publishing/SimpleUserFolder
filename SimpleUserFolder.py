@@ -15,7 +15,10 @@ from OFS.ObjectManager import ObjectManager
 from Shared.DC.ZRDB.Results import Results
 from sys import exc_info
 from User import User
-from zLOG import LOG, ERROR
+
+import logging
+
+logger = logging.getLogger('event.SimpleUserFolder')
 
 def addSimpleUserFolder(self,REQUEST=None):
     """Add a SimpleUserFolder to a container as acl_users"""
@@ -89,10 +92,8 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
             dict['name']=name
             return User(dict)
         except:
-            LOG('SimpleUserFolder',
-                ERROR,
-                'Error getting user '+repr(name),
-                error=exc_info())
+            logger.error('Error getting user %r',name,
+                         exc_info=True)
             return None
 
     security.declareProtected(ManageUsersPermission,'getUser')
