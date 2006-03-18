@@ -1,5 +1,24 @@
 Change & Credit Log
 
+  Version 1.1.2
+
+    - Fixed some deprecation warnings with Zope 2.8 and 2.9
+
+    - Quietened log output while running tests in Zope 2.8 and above.
+
+    - Fixed bug in handling of ZSQL methods which returned uppercase
+      column names.
+
+    - Tested with Zope 2.7, 2.8 and 2.9
+
+    Credits
+   
+      Chris Withers       -- Development work and improved
+                             documentation.
+
+      Gerhard Wannemacher -- Patch to cater for ZSQL methods which
+                             return uppercase column names.
+
   Version 1.1.1
 
     - Fixed bug that prevented new Simple User Folder instances
@@ -11,6 +30,10 @@ Change & Credit Log
 
     - Compatible with Zope 2.7. These changes were purely to the 
       testing framework.
+
+    Credits
+   
+      Chris Withers -- Development work.
 
   Version 1.1.0
 
