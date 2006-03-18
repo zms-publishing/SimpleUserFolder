@@ -147,12 +147,8 @@ Simple User Folder
  Testing
 
   The tests can be run by running the all_tests.py script in the
-  SimpleUserFolder/tests directory.
+  SimpleUserFolder/tests directory or using the test runner that comes
+  with your version of Zope.
 
-  Make sure you have set up the appropriate environment varriables.
-
-  In addition, if you are using Zope 2.5.1 or earlier, you will need
-  to delete line 39 of DA.py found in the ZGadflyDA product in your
-  Zope base or the tests will crash.
   
                 
