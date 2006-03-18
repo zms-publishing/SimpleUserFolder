@@ -83,7 +83,7 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
                 keys = result.names()
                 row = result[0]
                 for key in keys:
-                    dict[key]=row[key]
+                    dict[key.lower()]=row[key]
                 for row in result:
                     role = row.role
                     if role:

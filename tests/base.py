@@ -90,7 +90,7 @@ class UsageBase(SUFBase):
         # One, with the following:
         # username: 'test_user'
         # password: 'password'
-        # roles:    []
+        # roles:    ['role']
         #
         # And the other with:
         # username: 'test_user_with_extras'
@@ -127,7 +127,7 @@ class UsageBase(SUFBase):
         self.failUnless(isinstance(user,User))
         self.failUnless(AuthEncoding.pw_validate(user.__,'password' ))
         self.assertEqual(user.name,'test_user')
-        self.assertEqual(list(user.roles),[])
+        self.assertEqual(list(user.roles),['role'])
 
     def test_getUserWithExtras(self):
         user = self.suf.getUser('test_user_with_extras')

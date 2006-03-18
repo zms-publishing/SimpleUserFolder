@@ -33,7 +33,7 @@ class Tests(UsageBase):
         self.users = f
         
         # initial users
-        f.addUser('test_user', 'password',[])
+        f.addUser('test_user', 'password',['role'])
 
         username = 'test_user_with_extras'
         f.manage_addDTMLDocument(id=username,title='')

@@ -27,7 +27,7 @@ class dummyUserSource(Implicit):
     def __init__(self):
         # setup the user registry
         self.users = {'test_user':User('password',
-                                       []),
+                                       ['role']),
                       'test_user_with_extras':User('password',
                                                    [],
                                                    {'extra1':'extra1value',

@@ -8,7 +8,7 @@
 import Globals
 
 from base import UsageBase, test_dir
-from unittest import makeSuite
+from unittest import TestSuite, makeSuite
 from os import mkdir
 from os.path import exists, join
 from shutil import rmtree
@@ -27,8 +27,6 @@ def __init__(self,(items,data),brains=NoBrains, parent=None,
         item['name'] = item['name'].lower()
     original__init__(self,(items,data),brains=NoBrains, parent=None,
                      zbrains=None)
-
-Results.__init__ = __init__
 
 def addSQLMethod(obj,id):
     f=open(test_dir+'/'+id+'.sql')     
@@ -93,7 +91,7 @@ class SQLUsers:
                 roles.append(role)
         return User(password,roles)
         
-class Tests(UsageBase):
+class TestsUpperCase(UsageBase):
 
     def _setup(self):
         
@@ -125,7 +123,7 @@ class Tests(UsageBase):
         addSQLMethod(f,'getUserIds')
         
         # initial users
-        f.addUser(name='test_user',password='password',roles=[])
+        f.addUser(name='test_user',password='password',roles=['role'])
 
         f.addUser(name='test_user_with_extras',
                   password='password',
@@ -139,5 +137,20 @@ class Tests(UsageBase):
         UsageBase.tearDown(self)
         rmtree(self.gf_dir)
         
+class TestsLowerCase(TestsUpperCase):
+
+    def setUp(self):
+        TestsUpperCase.setUp(self)
+        # We patch the results class here to return lowercase
+        Results.__init__ = __init__
+
+    def tearDown(self):
+        # we undo our patching here
+        Results.__init__ = original__init__
+        TestsUpperCase.tearDown(self)
+            
 def test_suite():
-    return makeSuite(Tests)
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestsUpperCase))
+    suite.addTest(makeSuite(TestsLowerCase))
+    return suite
