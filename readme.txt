@@ -121,6 +121,17 @@ Simple User Folder
       Further schemes can be registered using the
       AccessControl.AuthEnconding.registerScheme function.
 
+      As an example, if you wanted to enable a user to be able to log
+      in with the password 'mypassword' but you wanted to store the
+      password in a SHA encrypted form, getUserDetails would need to
+      return '{SHA}kd/Z3bQZiv/FwZTNjObTOP3kcOI=' for the value of the
+      'password' key.
+
+      NB: Zope's support for encrypted passwords is underdocumented
+      but relatively simple. A thorough reading of the
+      AccessControl.AuthEnconding module should give any required
+      information. 
+
     roles
 
       a list of strings identifying the roles for the user. This list
