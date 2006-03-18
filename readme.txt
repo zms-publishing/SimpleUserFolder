@@ -116,6 +116,7 @@ Simple User Folder
       SSHA 
       SHA 
       CRYPT 
+      MYSQL
 
       Further schemes can be registered using the
       AccessControl.AuthEnconding.registerScheme function.
