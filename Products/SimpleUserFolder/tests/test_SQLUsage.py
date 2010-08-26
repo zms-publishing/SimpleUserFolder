@@ -1,4 +1,4 @@
-# Copyright (c) 2004-2006 Simplistix Ltd
+# Copyright (c) 2004-2010 Simplistix Ltd
 # Copyright (c) 2001-2003 New Information Paradigms Ltd
 #
 # This Software is released under the MIT License:
@@ -15,6 +15,7 @@ from shutil import rmtree
 from dummyUserSource import User
 
 from Products.ZSQLMethods.SQL import SQL
+from Products.SQLAlchemyDA.da import manage_addSAWrapper
 
 # monkeypatch Result.dictionaries to cater for gadfly
 from Shared.DC.ZRDB.Results import Results, NoBrains
@@ -96,21 +97,10 @@ class TestsUpperCase(UsageBase):
     def _setup(self):
         
         f = self.folder
-        # create test Gadfly DB
-        gf_dir = join(Globals.data_dir,'gadfly')
-        if not exists(gf_dir):
-            mkdir(gf_dir)
-        self.gf_dir = gf_dir = join(gf_dir,'suftests')
-        if exists(gf_dir):
-            # uh oh, lets not stomp on this db we know nothing about
-            raise RuntimeError,"'suftests' gadfly database already exists!"
-        mkdir(gf_dir)
         
         # add DB Connection
-        f.manage_addZGadflyConnection(id='sufdb',
-                                      title='',
-                                      connection='suftests',
-                                      check='yes')
+        manage_addSAWrapper(f, id='sufdb', dsn='sqlite://', title='')
+        
         # create tables
         addSQLMethod(f,'createTables')
         f.createTables()
@@ -135,7 +125,6 @@ class TestsUpperCase(UsageBase):
         
     def tearDown(self):
         UsageBase.tearDown(self)
-        rmtree(self.gf_dir)
         
 class TestsLowerCase(TestsUpperCase):
 
