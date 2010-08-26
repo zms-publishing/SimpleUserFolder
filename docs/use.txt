@@ -1,150 +1,145 @@
-==================
-Using ErrorHandler
-==================
+========================
+Using Simple User Folder
+========================
 
-.. module:: errorhandler
+To add a Simple User Folder, simply navigate to the required
+location and select 'Simple User Folder' from the add list.  If a
+user folder already exists at that location, you will need to delete
+it first.  You will need to be logged in as the Emergency User to
+perform these actions at the root of your ZODB.
 
-This is a handler for the python standard logging framework that can
-be used to tell whether messages have been logged at or above a
-certain level.
+It is always wise to develop and thoroughly test any support methods
+that your Simple User Folder will use before replacing an existing
+user folder.
 
-This can be useful when wanting to ensure that no errors have been
-logged before committing data back to a database.
+If at all possible, create an empty folder and thoroughly test your
+Simple User Folder instance there before using it elsewhere. This is
+particularly important if your Simple User Folder instance is to be
+used at the root of your ZODB, as if it doesn't behave as expected,
+you will have log log in as the Emergency User to correct any
+problems.
 
-Basic usage
------------
+Configuration
+-------------
 
-First, you set up the error handler:
+The following methods need to be added in an object from which the
+Simple User Folder can acquire them. This is usually the Contents
+tab of the Simple User Folder instance.
 
->>> from logging import getLogger
->>> from errorhandler import ErrorHandler
->>> logger = getLogger()
->>> e = ErrorHandler()
+Alternatively, you can subclass the SimpleUserFolder class and
+implement these methods there.
 
-The handler starts off being un-fired:
+.. method:: addUser(name, password, roles)
 
->>> e.fired
-False
+    This adds a user. It should raise an exception if the user already
+    exists.
 
-Then you do whatever else you need to do, which may involve logging:
+    :param name:
+     
+      a string specifying the user's name
+ 
+    :param password:
 
->>> logger.info('some information')
->>> e.fired
-False
+      a string containing the user's password.  This method must
+      perform any encryption of the password that is required.
 
-However, if any logging occurs at an error level or above:
+    :param roles:
 
->>> logger.error('an error')
+      a list of strings identifying the roles to be stored for this
+      user. This list may be empty.
 
-Then the error handler becomes fired:
+.. method:: editUser(name, password, roles)
 
->>> e.fired
-True
+    This edits a user. It should raise an exception if the user does
+    not exist.
 
-You can use this as a condition to only perform certain actions when
-no errors have been logged:
+    :param name:
+     
+      a string specifying the user's name.  This identifies the user
+      to be edited and so this method cannot be used to rename users.
+ 
+    :param password:
 
->>> if e.fired:
-...   print "Not updating files as errors have occurred"
-Not updating files as errors have occurred
+      a string containing the user's password or None.  If the
+      password is None, the user's password should not be changed.
+      This method must perform any encryption of the password that is
+      required.
+      
+    :param roles:
 
-Resetting
----------
+      a list of strings identifying the roles to be stored for this
+      user. This list may be empty.
 
-If your code does work in batches, you may wish to reset the error
-handler at the start of each batch:
+.. method:: deleteUser(name)
 
->>> e.fired
-True
->>> e.reset()
->>> e.fired
-False
+    This deletes a user. It should raise an exception if the user does
+    not exist.
 
-Registering for a particular logger
------------------------------------
+.. method:: getUserIds()
 
-The error handler can be set to only trigger on a certain
-logger and its children:
+    This should return a list of user names contained in this user
+    folder. Each username should be a string.
 
->>> from logging import getLogger
->>> e = ErrorHandler(logger='b')
+    .. note:: If this method is implemented with a Z SQL Method, then the
+       method should return results only a 'name' column.  One row
+       should be returned for each user.  See the tests for
+       examples.
 
-Using these three loggers as an example:
+.. method:: getUserDetails(name)
 
->>> a = getLogger()
->>> b = getLogger('b')
->>> c = getLogger('b.c')
+    This should return something that behaves like a dictionary with
+    keys and values as follows:
 
-Logging to `a` won't trigger the handler:
+    .. describe:: password
 
->>> a.critical('message')
->>> e.fired
-False
+      a string containing the password for the user.  This value must
+      either be in clear text or encrypted in such a way that
+      :func:`AccessControl.AuthEnconding.pw_validate` can encrypt a password
+      supplied in the HTTP request to match it.
 
-Logging to `b` will trigger the handler:
+      :func:`~AccessControl.AuthEnconding.pw_validate` can currently
+      handle passwords encypted using the following schemes::
 
->>> b.critical('message')
->>> e.fired
-True
->>> e.reset()
->>> e.fired
-False
+        SSHA 
+        SHA 
+        CRYPT 
+        MYSQL
 
-Logging to `c` will also trigger the handler:
+      Further schemes can be registered using the
+      :func:`AccessControl.AuthEnconding.registerScheme` function.
 
->>> c.critical('message')
->>> e.fired
-True
+      As an example, if you wanted to enable a user to be able to log
+      in with the password `mypassword` but you wanted to store the
+      password in a SHA encrypted form, :meth:`getUserDetails` would need to
+      return `{SHA}kd/Z3bQZiv/FwZTNjObTOP3kcOI=` for the value of the
+      `password` key.
 
-.. cleanup
+      .. note:: Zope's support for encrypted passwords is underdocumented
+        but relatively simple. A thorough reading of the
+        :mod:`AccessControl.AuthEnconding` module should give any required
+        information. 
 
-  >>> e.remove()
+    .. describe:: roles
 
-Using a different log level
----------------------------
+      a list of strings identifying the roles for the user. This list
+      may be empty.
 
-The logging level at which the :class:`ErrorHandler` is fired
-can also be configured: 
+    Any others keys in the returned dictionary will be made available
+    through the user's :meth:`__getitem__` interface. See the tests for
+    examples.
 
->>> from logging import INFO
->>> e = ErrorHandler(INFO)
+    If no user exists for the name supplied, `None` should be returned.
 
-Debugging messages still don't trigger:
+    .. note:: If your SimpleUserFolder appears to not be working, it may
+        mean that an exception is being raised as a result of your
+        getUserDetails method. Consult the event log for your Zope
+        instance and look for log entries of the form::
+        
+          SimpleUserFolder Error getting user
 
->>> logger.debug('debugging')
->>> e.fired
-False
-
-But now informational messages do:
-
->>> logger.info('some information')
->>> e.fired
-True
-
-.. cleanup
-
-  >>> e.remove()
-
-Installing and removing the handler
------------------------------------
-
-By default, the :class:`ErrorHandler` is installed when it is created,
-but this doesn't have to be the case:
-
->>> e = ErrorHandler(install=False)
->>> logger.error('an error')
->>> e.fired
-False
-
-When you create an :class:`ErrorHandler` like this, you have to
-install it before log messages will cause it to become fired:
-
->>> e.install()
->>> logger.error('an error')
->>> e.fired
-True
-
-However, it's always good practice to remove the handler when you're
-done, like this:
-
->>> e.remove()
+    .. note:: If this method is implemented with a Z SQL Method, then the
+          method should return results with `name`, `password` and
+          `role` columns. One row should be returned for each role the
+          user has.  See the tests for examples.  Any other columns in
+          the first row returned will be made available through the
+          user's :meth:`__getitem__` interface. See the tests for examples.

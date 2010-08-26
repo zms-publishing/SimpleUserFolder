@@ -1,12 +1,11 @@
-ErrorHandler documentation
-==========================
+SimpleUserFolder documentation
+==============================
 
 .. toctree::
    :maxdepth: 2
 
    installation.txt
    use.txt
-   api.txt
    development.txt
    changes.txt
    license.txt

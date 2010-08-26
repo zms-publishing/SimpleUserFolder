@@ -1,33 +1,15 @@
-============
-ErrorHandler
-============
+================
+SimpleUserFolder
+================
 
-This is a handler for the python standard logging framework that can
-be used to tell whether messages have been logged at or above a
-certain level.
+It has the following feaures:
 
-This can be useful when wanting to ensure that no errors have been
-logged before committing data back to a database.
+- Customisable user addition, editing, deleting, listing and gathering of credentials
 
-As an example, first, you set up the error handler:
+- Users can be provided with arbitary extra attributes
 
->>> from errorhandler import ErrorHandler
->>> e = ErrorHandler()
+- ZSQL methods and Python Scripts can be directly used for customisation
 
-Then you can log and check the handler at any point to see if it has
-been triggered:
+- Support for encrypted passwords
 
->>> e.fired
-False
->>> from logging import getLogger
->>> logger = getLogger()
->>> logger.error('an error')
->>> e.fired
-True
-
-You can use the `fired` attribute to only perform actions when no
-errors have been logged:
-
->>> if e.fired:
-...   print "Not updating files as errors have occurred"
-Not updating files as errors have occurred
+- Support for user caching via ZSQL method caches or RAMCacheManager
