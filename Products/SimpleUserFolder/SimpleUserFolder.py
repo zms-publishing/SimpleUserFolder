@@ -1,4 +1,4 @@
-# Copyright (c) 2004-2006 Simplistix Ltd
+# Copyright (c) 2004-2010 Simplistix Ltd
 # Copyright (c) 2001-2003 New Information Paradigms Ltd
 #
 # This Software is released under the MIT License:
@@ -10,7 +10,7 @@ ViewManagementPermission = 'View management screens'
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.User import BasicUserFolder
-from Globals import InitializeClass
+from App.class_init import InitializeClass
 from OFS.ObjectManager import ObjectManager
 from Shared.DC.ZRDB.Results import Results
 from sys import exc_info
