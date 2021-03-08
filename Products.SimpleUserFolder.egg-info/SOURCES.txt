@@ -1,0 +1,9 @@
+README.txt
+setup.py
+Products/__init__.py
+Products.SimpleUserFolder.egg-info/PKG-INFO
+Products.SimpleUserFolder.egg-info/SOURCES.txt
+Products.SimpleUserFolder.egg-info/dependency_links.txt
+Products.SimpleUserFolder.egg-info/not-zip-safe
+Products.SimpleUserFolder.egg-info/top_level.txt
+Products/SimpleUserFolder/__init__.py
