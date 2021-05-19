@@ -42,4 +42,10 @@ class SimpleUserFolder(ObjectManager,BasicUserFolder):
     def getUser():
         return None
 
+    def getUsers(self):
+        return []
+
+    def getUserNames(self):
+        return []
+
 InitializeClass(SimpleUserFolder)
